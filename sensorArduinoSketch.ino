@@ -8,10 +8,11 @@
 
 unsigned long lastDebounceTime = 0;  // the last time the output pin was toggled
 unsigned long debounceDelay = 1000;    // the debounce time; increase if the output flickers 
+//pins defined for the bmp180 A4 and A5 because they use i2c
 
 #define DHTPIN 2     // Digital pin connected to the DHT sensor 
 
-int pinInterrupt = 3; 
+int pinInterrupt = 3; //Digital pin connected to the anemometer
 float valWind;
 float Count=0;
 
