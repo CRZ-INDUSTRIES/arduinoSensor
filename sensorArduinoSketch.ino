@@ -2,7 +2,10 @@
 #include <DHT.h>
 #include <DHT_U.h>
 #include <Adafruit_BMP085.h>
+#include <Wire.h> 
+#include <LiquidCrystal_I2C.h>
 
+LiquidCrystal_I2C lcd(0x27,20,4);
 
 
 
@@ -41,14 +44,25 @@ void setup() {
   dht.begin();
   bmp.begin();
   sensor_t sensor;
+  lcd.init();                      // initialize the lcd 
+  lcd.init();
+  // Print a message to the LCD.
+  lcd.backlight();
+ 
 
 }
 
 void loop() {
   // Delay between measurements.
   // delay(60000);
-  delay(1000);
   
+  delay(1000);
+  lcd.setCursor(0,0);
+   lcd.print("Presion: ");
+  lcd.setCursor(0,1);
+  lcd.print(bmp.readPressure());
+  lcd.setCursor(7,1);
+  lcd.print("Pa");
   DynamicJsonDocument doc(1024);
   JsonArray array = doc.to<JsonArray>();
 
@@ -99,6 +113,7 @@ void loop() {
   JsonObject windSpeed  = doc.createNestedObject();
   if ((millis() - lastDebounceTime) > debounceDelay) {
     lastDebounceTime = millis();
+    
     windSpeed["sensorType"] = "Wind";
     
     windSpeed["sensorValue"] = Count*8.75/100;
@@ -113,3 +128,5 @@ void loop() {
   serializeJson(array, Serial);
   Serial.println();
 }
+
+
